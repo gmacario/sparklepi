@@ -6,5 +6,5 @@ functions:
   sparklepi:
     lang: node16
     handler: ./sparklepi
-    image: ghcr.io/${OWNER:-martinwoodward}/sparklepi:${TAG:-latest}
+    image: ghcr.io/${OWNER:-gmacario}/sparklepi:${TAG:-latest}
 
