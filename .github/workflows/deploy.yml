@@ -46,7 +46,8 @@ jobs:
           --extra-tag ${{ github.sha }}
           --platforms linux/arm/v7
   deploy:
-    runs-on: [self-hosted, rpi]
+    # runs-on: [self-hosted, rpi]
+    runs-on: ubuntu-latest
     environment:
       name: rpi
     needs: [build]
