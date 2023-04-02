@@ -12,7 +12,7 @@ permissions:
   packages: write
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -45,23 +45,23 @@ jobs:
           faas-cli publish
           --extra-tag ${{ github.sha }}
           --platforms linux/arm/v7
-  deploy:
-    # runs-on: [self-hosted, rpi]
-    runs-on: ubuntu-latest
-    environment:
-      name: rpi
-    needs: [build]
-    steps:
-      - name: Get Repo Owner
-        id: get_repo_owner
-        run: >
-          echo ::set-output name=repo_owner::$(echo ${{ github.repository_owner }} |
-          tr '[:upper:]' '[:lower:]')
-      - name: Login
+  # deploy:
+  #   # runs-on: [self-hosted, rpi]
+  #   runs-on: ubuntu-latest
+  #   environment:
+  #     name: rpi
+  #   needs: [build]
+  #   steps:
+      # - name: Get Repo Owner
+      #   id: get_repo_owner
+      #   run: >
+      #     echo ::set-output name=repo_owner::$(echo ${{ github.repository_owner }} |
+      #     tr '[:upper:]' '[:lower:]')
+      - name: Login to OpenFaaS
         run: >
           echo ${{secrets.OPENFAAS_PASSWORD}} | 
           faas-cli login --gateway ${{secrets.OPENFAAS_URL}} --password-stdin
-      - name: Deploy
+      - name: Deploy to OpenFaaS
         run: >
           OWNER="${{ steps.get_repo_owner.outputs.repo_owner }}"
           TAG="${{ github.sha }}"
